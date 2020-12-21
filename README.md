@@ -13,7 +13,7 @@ npm install rsa-encrypt-long -S
 ### 使用
 
 ```javascript
-import Encrypt from "rsa-encrypt-long";
+import { Encrypt } from "rsa-encrypt-long";
 const encrypt = new Encrypt();
 // RSA 加密
 // 设置公钥

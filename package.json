@@ -6,7 +6,6 @@
   "typings": "types/index.d.ts",
   "files": [
     "lib",
-    "typings",
     "types",
     "README.md",
     "LICENSE"
