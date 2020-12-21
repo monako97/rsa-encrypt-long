@@ -73,14 +73,6 @@ declare module "jsencrypt" {
     public encrypt(key: string): string;
 
     /**
-     * RSA长数据加密
-     * @param {string} str 要加密的字符串
-     * @return {string} 以base64编码的加密字符串
-     * @public
-     */
-    public encryptLong(str: string): string;
-
-    /**
      * RSAKey对象解密的代理方法，使用rsa密钥对象的私有组件解密字符串。
      * 请注意，如果未设置对象，则将使用JSEncrypt构造函数中传递的参数（通过getKey方法）动态创建
      * @param {string} str 以base64编码的加密字符串
@@ -88,14 +80,6 @@ declare module "jsencrypt" {
      * @public
      */
     public decrypt(str: string): string;
-
-    /**
-     * RSA长数据解密
-     * @param {string} encryptString 以base64编码的加密字符串
-     * @return {string} 解密的字符串
-     * @public
-     */
-    public decryptLong(encryptString: string): string;
 
     /**
      * RSAKey对象签名
