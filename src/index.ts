@@ -3,7 +3,7 @@ import { JSEncrypt } from "jsencrypt";
  * RSA 长数据 加密 解密
  * @example
  * ```javascript
- * import Encrypt from './encrypt-util';
+ * import Encrypt from 'rsa-encrypt-long';
  * const encrypt = new Encrypt();
  * // RSA 加密
  * encrypt.setPublicKey(public_key); // 设置公钥

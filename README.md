@@ -4,8 +4,16 @@
 
 > 基于 `jsencrypt` 实现的 RSA 长数据加解密, 补充类型声明
 
+### 安装
+
+```npm
+npm install rsa-encrypt-long -S
+```
+
+### 使用
+
 ```javascript
-import Encrypt from "./encrypt-util";
+import Encrypt from "rsa-encrypt-long";
 const encrypt = new Encrypt();
 // RSA 加密
 // 设置公钥
