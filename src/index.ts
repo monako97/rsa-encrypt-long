@@ -22,7 +22,7 @@ interface IJSEncryptOptions {
  */
 export class Encrypt extends JSEncrypt {
   /**
-   * 设置rsa密钥参数的方法
+   * 设置rsa密钥参数
    * （一种方法足以设置公共密钥和私有密钥，因为私有密钥包含公共密钥参数）。
    * 如果启用了日志，则记录警告
    * @param {Object|string} key pem编码的字符串或对象（带有或不带有页眉/页脚）
@@ -70,7 +70,7 @@ export class Encrypt extends JSEncrypt {
    */
   setPublicKey!: (pubkey: string) => void;
   /**
-   * RSAKey对象解密的代理方法，使用rsa密钥对象的私有组件解密字符串。
+   * RSAKey对象加密，使用rsa密钥对象的公钥加密字符串。
    * 请注意，如果未设置对象，则将使用JSEncrypt构造函数中传递的参数（通过getKey方法）动态创建
    * @param {string} str 要加密的字符串
    * @return {string} 以base64编码的加密字符串
@@ -78,7 +78,7 @@ export class Encrypt extends JSEncrypt {
    */
   encrypt!: (key: string) => string;
   /**
-   * RSAKey对象解密的代理方法，使用rsa密钥对象的私有组件解密字符串。
+   * RSAKey对象解密，使用rsa密钥对象的私钥解密字符串。
    * 请注意，如果未设置对象，则将使用JSEncrypt构造函数中传递的参数（通过getKey方法）动态创建
    * @param {string} str 以base64编码的加密字符串
    * @return {string} 解密的字符串
@@ -124,8 +124,34 @@ export class Encrypt extends JSEncrypt {
     super(options);
   }
   /**
-   * RSA长数据加密
-   * @param {string} str 要加密的字符串
+   * 十六进制转字节
+   * @param {string} hex 十六进制
+   * @returns {number[]} bytes
+   */
+  hexToBytes(hex: string): number[] {
+    const bytes = [];
+
+    for (let c = 0, len = hex.length; c < len; c += 2)
+      bytes.push(parseInt(hex.substr(c, 2), 16));
+    return bytes;
+  }
+  /**
+   * 字节转十六进制
+   * @param {number[]} bytes 字节
+   * @returns {string} 十六进制
+   */
+  bytesToHex(bytes: number[]): string {
+    const hex = [];
+
+    for (let i = 0, len = bytes.length; i < len; i++) {
+      hex.push((bytes[i] >>> 4).toString(16));
+      hex.push((bytes[i] & 0xf).toString(16));
+    }
+    return hex.join("");
+  }
+  /**
+   * RSAKey对象长数据加密
+   * @param {string} string 要加密的字符串
    * @return {string} 以base64编码的加密字符串
    * @public
    */
@@ -178,7 +204,7 @@ export class Encrypt extends JSEncrypt {
     }
   }
   /**
-   * RSA长数据解密
+   * RSAKey对象长数据解密
    * @param {string} encryptString 以base64编码的加密字符串
    * @return {string} 解密的字符串
    * @public
@@ -197,19 +223,19 @@ export class Encrypt extends JSEncrypt {
         hexTmp: string,
         offSet = 0,
         endOffSet = MAX_DECRYPT_BLOCK;
-      const buf = hexToBytes(encryptString),
+      const buf = this.hexToBytes(encryptString),
         inputLen = buf.length;
 
       // 分段解密
       while (inputLen - offSet > 0) {
         if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
           bufTmp = buf.slice(offSet, endOffSet);
-          hexTmp = bytesToHex(bufTmp);
+          hexTmp = this.bytesToHex(bufTmp);
           t1 = k.decrypt(hexTmp);
           ct += t1;
         } else {
           bufTmp = buf.slice(offSet, inputLen);
-          hexTmp = bytesToHex(bufTmp);
+          hexTmp = this.bytesToHex(bufTmp);
           t1 = k.decrypt(hexTmp);
           ct += t1;
         }
@@ -222,30 +248,3 @@ export class Encrypt extends JSEncrypt {
     }
   }
 }
-
-/**
- * 十六进制转字节
- * @param {string} hex 十六进制
- * @returns {number[]} bytes
- */
-const hexToBytes = (hex: string): number[] => {
-  const bytes = [];
-
-  for (let c = 0, len = hex.length; c < len; c += 2)
-    bytes.push(parseInt(hex.substr(c, 2), 16));
-  return bytes;
-};
-/**
- * 字节转十六进制
- * @param {number[]} bytes 字节
- * @returns {string} 十六进制
- */
-const bytesToHex = (bytes: number[]): string => {
-  const hex = [];
-
-  for (let i = 0, len = bytes.length; i < len; i++) {
-    hex.push((bytes[i] >>> 4).toString(16));
-    hex.push((bytes[i] & 0xf).toString(16));
-  }
-  return hex.join("");
-};
