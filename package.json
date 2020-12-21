@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "RSA长数据加解密工具",
   "main": "lib/index.js",
-  "typings": "typings/typings.d.ts",
+  "typings": "types/index.d.ts",
   "files": [
     "lib",
     "typings",
@@ -12,9 +12,9 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "precompile": "rm -rf ./lib",
+    "precompile": "rm -rf ./lib && rm -rf ./types",
     "compile:tsc": "tsc --removeComments",
-    "compile:types": "tsc --declaration --emitDeclarationOnly --outDir lib",
+    "compile:types": "tsc --declaration --emitDeclarationOnly --outDir types",
     "compile": "npm run compile:tsc && npm run compile:types",
     "prepublishOnly": "npm run compile && npm version patch"
   },
