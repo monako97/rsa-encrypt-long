@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "isolatedModules": true,
+        "strict": true, // 使用严格模式
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            // 配置模块路径映射
+            "@src": ["src"],
+            "@/*": ["src/*"]
+        },
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true, // 忽略所有的声明文件（ *.d.ts）的类型检查。
+        // 下面这些选项对 babel 编译 TypeScript 没有作用但是可以让 VSCode 等编辑器正确提示错误
+        "target": "ES5", // 指定ECMAScript目标版本
+        "module": "CommonJS", // 指定模块化类型
+        "outDir": "lib", // 输出目录
+        "declaration": false, // 是否生成声明文件
+        "removeComments": false, // 删除所有注释，除了以 /!*开头的版权信息。
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "newLine": "lf",
+        "listEmittedFiles": true, // 打印出编译后生成文件的名字。
+        "listFiles": false, // 编译过程中打印文件名。
+        "noImplicitAny": true, // 在表达式和声明上有隐含的 any类型时报错。
+        "noImplicitThis": true, // 在表达式和声明上有 this 的 any类型时报错。
+        "alwaysStrict": true, // 始终以严格模式检查每个模块，并在编译后加入 "use strict"
+        "traceResolution": false, // 跟踪模块解析
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
