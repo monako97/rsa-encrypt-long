@@ -1,4 +1,4 @@
-import * as JSEncrypt from "jsencrypt";
+import { JSEncrypt } from "jsencrypt";
 
 interface IJSEncryptOptions {
   default_key_size?: number; // 默认值：1024位的密钥大小
