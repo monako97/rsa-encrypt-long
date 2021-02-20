@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/monako97",
   "dependencies": {
-    "jsencrypt": "^3.0.0-rc.1"
+    "jsencrypt": "^3.0.1"
   },
   "devDependencies": {
     "typescript": "^4.1.3"
