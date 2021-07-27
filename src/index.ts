@@ -1,5 +1,5 @@
 import JSEncrypt from "jsencrypt";
-
+import { parseBigInt } from "jsencrypt/lib/lib/jsbn/jsbn";
 interface IJSEncryptOptions {
   default_key_size?: number; // 默认值：1024位的密钥大小
   default_public_exponent?: string; // 默认值：'010001', 公共指数的十六进制表示形式
@@ -77,14 +77,6 @@ export class Encrypt extends JSEncrypt {
    * @public
    */
   encrypt!: (key: string) => string;
-  /**
-   * RSAKey对象解密，使用rsa密钥对象的私钥解密字符串。
-   * 请注意，如果未设置对象，则将使用JSEncrypt构造函数中传递的参数（通过getKey方法）动态创建
-   * @param {string} str 以base64编码的加密字符串
-   * @return {string} 解密的字符串
-   * @public
-   */
-  decrypt!: (str: string) => string;
   /**
    * RSAKey对象签名
    * @param {string} str 要签名的字符串
@@ -206,10 +198,11 @@ export class Encrypt extends JSEncrypt {
   /**
    * RSAKey对象长数据解密
    * @param {string} encryptString 以base64编码的加密字符串
+   * @param {'public' | 'private'} type 使用公、私钥解密
    * @return {string} 解密的字符串
    * @public
    */
-  decryptLong(encryptString: string): string {
+  decryptLong(encryptString: string, type: 'public' | 'private' = 'private'): string {
     const k = this.getKey(),
       MAX_DECRYPT_BLOCK = (k.n.bitLength() + 7) >> 3;
 
@@ -231,12 +224,12 @@ export class Encrypt extends JSEncrypt {
         if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
           bufTmp = buf.slice(offSet, endOffSet);
           hexTmp = this.bytesToHex(bufTmp);
-          t1 = k.decrypt(hexTmp);
+          t1 = k.decrypt(hexTmp, type);
           ct += t1;
         } else {
           bufTmp = buf.slice(offSet, inputLen);
           hexTmp = this.bytesToHex(bufTmp);
-          t1 = k.decrypt(hexTmp);
+          t1 = k.decrypt(hexTmp, type);
           ct += t1;
         }
         offSet += MAX_DECRYPT_BLOCK;
@@ -247,4 +240,60 @@ export class Encrypt extends JSEncrypt {
       return "";
     }
   }
+  /**
+   * RSAKey对象解密，使用rsa密钥对象的私钥解密字符串。
+   * 请注意，如果未设置对象，则将使用JSEncrypt构造函数中传递的参数（通过getKey方法）动态创建
+   * @param {string} str 以base64编码的加密字符串
+   * @param {'public' | 'private'} type 使用公、私钥解密
+   * @return {string} 解密的字符串
+   * @public
+   */
+  decrypt(ctext: string, type: 'public' | 'private'): string | null {
+    var c = parseBigInt(ctext, 16);
+    var m;
+    if (type === 'public') {
+      m = this.doPublic(c);
+    } else {
+      m = this.doPrivate(c);
+    }
+    if (m == null) {
+        return null;
+    }
+    return pkcs1unpad2(m, (this.n.bitLength() + 7) >> 3, type);
+}
+}
+
+function pkcs1unpad2(d: { toByteArray: () => any; }, n: number, type: 'public' | 'private') {
+  var b = d.toByteArray();
+  var i = 0;
+  while (i < b.length && b[i] == 0) {
+      ++i;
+  }
+  if (type === 'private') {
+    if (b.length - i != n - 1 || b[i] != 2) {
+        return null;
+    }
+  }
+  ++i;
+  while (b[i] != 0) {
+      if (++i >= b.length) {
+          return null;
+      }
+  }
+  var ret = "";
+  while (++i < b.length) {
+      var c = b[i] & 255;
+      if (c < 128) { // utf-8 decode
+          ret += String.fromCharCode(c);
+      }
+      else if ((c > 191) && (c < 224)) {
+          ret += String.fromCharCode(((c & 31) << 6) | (b[i + 1] & 63));
+          ++i;
+      }
+      else {
+          ret += String.fromCharCode(((c & 15) << 12) | ((b[i + 1] & 63) << 6) | (b[i + 2] & 63));
+          i += 2;
+      }
+  }
+  return ret;
 }
