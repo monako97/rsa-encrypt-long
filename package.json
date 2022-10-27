@@ -1,6 +1,6 @@
 {
   "name": "rsa-encrypt-long",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "RSA长数据加解密工具",
   "main": "lib/index.js",
   "typings": "types/index.d.ts",
@@ -12,11 +12,11 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "precompile": "rm -rf ./lib && rm -rf ./types",
-    "compile:tsc": "tsc --removeComments",
-    "compile:types": "tsc --declaration --emitDeclarationOnly --outDir types",
-    "compile": "npm run compile:tsc && npm run compile:types",
-    "prepublishOnly": "npm run compile && npm version patch"
+    "prebuild": "rm -rf ./lib && rm -rf ./types",
+    "build:tsc": "tsc --removeComments",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
+    "build": "yarn build:tsc && yarn build:types",
+    "prepublishOnly": "yarn build"
   },
   "author": {
     "name": "monako",
@@ -27,7 +27,7 @@
     "type": "git",
     "url": "https://github.com/monako97/rsa-encrypt-long.git"
   },
-  "homepage": "https://github.com/monako97",
+  "homepage": "https://github.com/monako97/rsa-encrypt-long.git",
   "dependencies": {
     "jsencrypt": "3.0.1"
   },
