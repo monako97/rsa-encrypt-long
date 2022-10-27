@@ -1,6 +1,6 @@
 {
   "name": "rsa-encrypt-long",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "RSA长数据加解密工具",
   "main": "lib/index.js",
   "typings": "types/index.d.ts",
