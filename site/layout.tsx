@@ -10,6 +10,8 @@ import Home from './home';
 
 import './layout.global.css';
 
+import 'neko-ui/es/provider';
+
 function App() {
   const { isDark } = theme;
 

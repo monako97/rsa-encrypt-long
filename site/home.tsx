@@ -3,6 +3,10 @@ import { Encrypt } from 'rsa-encrypt-long';
 
 import Readme from '../README.md?raw';
 
+import 'neko-ui/es/typography';
+import 'neko-ui/es/code';
+import 'neko-ui/es/md';
+
 const publicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw0uFvORTj1y5R0dogYcs
 cK6bv1dTJmsdt60Gg/IIvL2c9O4rtyw5Ngu0eFgmWq/p92BlpFEXdgstx7j+Ds8U
