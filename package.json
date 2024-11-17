@@ -43,7 +43,6 @@
     "types"
   ],
   "module": "es/index.js",
-  "types": "types/index.d.ts",
   "exports": {
     ".": {
       "require": "./lib/index.js",
