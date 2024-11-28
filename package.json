@@ -20,8 +20,7 @@
     "ui libraries"
   ],
   "devDependencies": {
-    "@moneko/cli": "2.17.3",
-    "@moneko/core": "3.24.14",
+    "@moneko/core": "3.26.1",
     "@moneko/solid": "^1.10.5",
     "eslint-config-neko": "3.0.0",
     "eslint-plugin-solid": "0.14.4",
