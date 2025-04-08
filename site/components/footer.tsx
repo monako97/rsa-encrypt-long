@@ -1,4 +1,4 @@
-import app from '@app/info';
+import { repository, projectName, author } from '@app/info';
 
 import './footer.css';
 
@@ -10,20 +10,20 @@ function Footer() {
       <p>
         <a
           class="n-site-footer-link"
-          href={app.repository?.url}
+          href={repository?.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {app.projectName}
+          {projectName}
         </a>
         {` Ⓒ ${year} Made with ❤️‍🔥 by `}
         <a
           class="n-site-footer-link"
-          href={app.author?.url}
+          href={author?.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {app.author?.name}
+          {author?.name}
         </a>
       </p>
     </footer>

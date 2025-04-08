@@ -266,7 +266,6 @@ export class Encrypt extends JSEncrypt {
         '1e',
         '1f',
       ];
-
       const hex = new Array(bytes.length);
 
       for (let i = 0; i < bytes.length; i++) {
@@ -292,7 +291,9 @@ export class Encrypt extends JSEncrypt {
     if (Encrypt.cache.size >= Encrypt.CACHE_MAX_SIZE) {
       const firstKey = Encrypt.cache.keys().next().value;
 
-      Encrypt.cache.delete(firstKey);
+      if (typeof firstKey === 'string') {
+        Encrypt.cache.delete(firstKey);
+      }
     }
     Encrypt.cache.set(key, value);
   }
